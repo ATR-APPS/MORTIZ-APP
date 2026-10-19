@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <title>Mortiz</title>
+    <meta name="description" content="Publica catálogos y productos en la web de Mortiz.">
+    <meta name="robots" content="noindex">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Mortiz">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="stylesheet" href="css/app.css?v=aac8d33">
+</head>
+<body>
+
+<section class="vista" id="conectar" hidden>
+    <div class="conectar">
+        <img class="conectar__icono" src="icons/icon-192.png" width="72" height="72" alt="">
+        <h1 class="titulo-grande">Mortiz</h1>
+        <p class="nota">Para publicar en la web, pega un token de GitHub con permiso de escritura sobre <b>ATR-WEBS/MORTIZ-CODE</b>. Se guarda sólo en este teléfono.</p>
+        <form class="tarjeta" id="formToken">
+            <input class="campo" id="token" type="password" placeholder="github_pat_…" autocomplete="off" autocapitalize="off" spellcheck="false" required>
+            <button class="boton boton--principal" type="submit">Conectar</button>
+        </form>
+        <a class="enlace" id="crearToken" target="_blank" rel="noopener">Crear token en GitHub</a>
+    </div>
+</section>
+
+<section class="vista" id="catalogos" hidden>
+    <header class="barra">
+        <button class="barra__btn" id="ordenarCatalogos" type="button">Ordenar</button>
+        <div class="barra__titulo">Catálogos</div>
+        <button class="barra__btn barra__btn--icono" id="agregarCatalogo" type="button" aria-label="Nuevo catálogo">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+    </header>
+    <div class="contenido">
+        <h1 class="titulo-grande">Catálogos</h1>
+        <p class="nota" id="ayudaCatalogos" hidden>Arrastra para cambiar el orden en que se cuelgan en la web.</p>
+        <ul class="filas" id="listaCatalogos"></ul>
+        <p class="nota nota--centro" id="sinCatalogos" hidden>Todavía no hay catálogos.</p>
+        <div class="pie">
+            <a class="enlace" href="https://atr-webs.github.io/MORTIZ-WEB/#gallery" target="_blank" rel="noopener">Ver la web</a>
+            <button class="enlace" id="desconectar" type="button">Desconectar</button>
+        </div>
+    </div>
+</section>
+
+<section class="vista" id="catalogo" hidden>
+    <header class="barra">
+        <button class="barra__btn barra__btn--atras" id="volver" type="button">
+            <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>Catálogos
+        </button>
+        <div class="barra__titulo" id="tituloChico"></div>
+        <span class="barra__acciones">
+            <button class="barra__btn" id="ordenarProductos" type="button">Ordenar</button>
+            <button class="barra__btn barra__btn--icono" id="agregarProducto" type="button" aria-label="Nuevo producto">
+                <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+        </span>
+    </header>
+    <div class="contenido">
+        <h1 class="titulo-grande" id="tituloCatalogo"></h1>
+        <div class="portada">
+            <span class="fila__portada" id="portadaImg"></span>
+            <span class="fila__texto">
+                <span class="fila__nombre">Portada</span>
+                <span class="fila__detalle" id="portadaDetalle"></span>
+            </span>
+            <button class="portada__btn" id="quitarPortada" type="button">Quitar</button>
+            <button class="portada__btn portada__btn--principal" id="cambiarPortada" type="button">Cambiar</button>
+            <input id="archivoPortada" type="file" accept="image/*" hidden>
+        </div>
+        <p class="nota" id="ayudaProductos" hidden>Arrastra para cambiar el orden en que se ven en la web.</p>
+        <p class="nota" id="catalogoVacio" hidden>Este catálogo aparecerá en la web cuando tenga su primer producto.</p>
+        <ul class="cuadricula" id="listaProductos"></ul>
+    </div>
+</section>
+
+<section class="vista hoja" id="nuevoCatalogo" hidden>
+    <header class="barra">
+        <button class="barra__btn" data-cerrar type="button">Cancelar</button>
+        <div class="barra__titulo barra__titulo--fijo">Nuevo catálogo</div>
+        <span class="barra__btn"></span>
+    </header>
+    <div class="contenido">
+        <form id="formCatalogo">
+            <input class="campo" id="nombreCatalogo" type="text" placeholder="Nombre del catálogo" autocomplete="off" maxlength="60" required>
+        </form>
+        <p class="nota nota--arriba">Después le agregas productos y, si quieres, una foto de portada propia. Si no, la portada es la foto de su primer producto.</p>
+    </div>
+    <div class="abajo">
+        <button class="boton boton--principal" id="crearCatalogo" type="button" disabled>Crear</button>
+    </div>
+</section>
+
+<section class="vista hoja" id="nuevoProducto" hidden>
+    <header class="barra">
+        <button class="barra__btn" data-cerrar type="button">Cancelar</button>
+        <div class="barra__titulo barra__titulo--fijo">Nuevo producto</div>
+        <span class="barra__btn"></span>
+    </header>
+    <div class="contenido">
+        <input class="campo" id="nombreProducto" type="text" placeholder="Nombre del producto" autocomplete="off" maxlength="60">
+        <button class="elegir" id="elegir" type="button">
+            <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="M21 16l-5-5-8 8"/></svg>
+            Elegir fotos
+        </button>
+        <div id="seleccion" hidden>
+            <p class="nota nota--arriba">La primera es la que se ve en la web. Toca una foto para ponerla primero; arrastra para cambiar el orden en que se ven al abrir el producto.</p>
+            <ul class="cuadricula" id="fotosNuevas"></ul>
+            <button class="boton" id="masFotos" type="button">Agregar más fotos</button>
+        </div>
+        <input id="archivos" type="file" accept="image/*" multiple hidden>
+    </div>
+    <div class="abajo">
+        <button class="boton boton--principal" id="publicar" type="button" disabled>Publicar</button>
+    </div>
+</section>
+
+<div class="aviso" id="aviso" role="status" aria-live="polite" hidden>
+    <span class="aviso__giro" aria-hidden="true"></span>
+    <span class="aviso__texto"></span>
+</div>
+
+<script src="vendor/sortable/Sortable.min.js?v=aac8d33"></script>
+<script type="module" src="js/app.js?v=aac8d33"></script>
+</body>
+</html>
